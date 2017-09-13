@@ -5765,31 +5765,59 @@ var _user$project$Game$foo = _elm_lang$core$Native_Platform.outgoingPort(
 var _user$project$Game$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		var _p1 = _p0._0;
-		return {
-			ctor: '_Tuple2',
-			_0: _p1,
-			_1: _user$project$Game$foo(
-				A2(_elm_lang$core$Basics_ops['++'], 'update', _p1))
-		};
+		switch (_p0.ctor) {
+			case 'Update':
+				var _p1 = _p0._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _p1,
+					_1: _user$project$Game$foo(_p1)
+				};
+			case 'Dammit':
+				var _p2 = _p0._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _p2,
+					_1: _user$project$Game$foo(
+						A2(_elm_lang$core$Debug$log, 'got here', _p2))
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Game$foo('why aren\'t you working')
+				};
+		}
 	});
-var _user$project$Game$bar = _elm_lang$core$Native_Platform.incomingPort('bar', _elm_lang$core$Json_Decode$string);
-var _user$project$Game$Update = function (a) {
-	return {ctor: 'Update', _0: a};
+var _user$project$Game$baz = _elm_lang$core$Native_Platform.incomingPort('baz', _elm_lang$core$Json_Decode$string);
+var _user$project$Game$raz = _elm_lang$core$Native_Platform.incomingPort('raz', _elm_lang$core$Json_Decode$int);
+var _user$project$Game$NoOp = function (a) {
+	return {ctor: 'NoOp', _0: a};
+};
+var _user$project$Game$Dammit = function (a) {
+	return {ctor: 'Dammit', _0: a};
 };
 var _user$project$Game$subscriptions = function (model) {
-	return _user$project$Game$bar(_user$project$Game$Update);
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _user$project$Game$baz(_user$project$Game$Dammit),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Game$raz(_user$project$Game$NoOp),
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$Game$main = _elm_lang$core$Platform$program(
 	{
-		init: {
-			ctor: '_Tuple2',
-			_0: 'FooDat',
-			_1: _user$project$Game$foo('FooDat')
-		},
+		init: {ctor: '_Tuple2', _0: 'FooDat', _1: _elm_lang$core$Platform_Cmd$none},
 		update: _user$project$Game$update,
 		subscriptions: _user$project$Game$subscriptions
 	})();
+var _user$project$Game$Update = function (a) {
+	return {ctor: 'Update', _0: a};
+};
 
 var Elm = {};
 Elm['Game'] = Elm['Game'] || {};

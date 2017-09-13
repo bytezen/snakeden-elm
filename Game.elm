@@ -4,21 +4,14 @@ import Platform exposing (program)
 import Json.Decode 
 
 
--- port for sending something to JS
-port foo : String -> Cmd msg
-
--- port for listening for messages from JS
-port bar : (String -> msg) -> Sub msg
-
-
 type alias Model = String
 
-type Msg = Update Model
+type Msg = Listen String 
 
 
 main : Program Never Model Msg
 main = program 
-        { init = ("FooDat", foo "FooDat")
+        { init = ("FooDat", Cmd.none)
         , update = update
         , subscriptions = subscriptions
         }
@@ -27,9 +20,15 @@ main = program
 update : Msg -> Model -> (Model, Cmd msg)
 update msg model =
     case msg of
-        Update s -> ( s, foo <| "update: " ++ s)
+        Listen input -> (input, talkBack input)
 
+
+-- port for sending string out to JS
+port talkBack : String -> Cmd msg
+
+-- port for listening for messages from JS
+port talkToElm : (String -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    bar Update  
+    talkToElm Listen    

@@ -1,0 +1,28 @@
+var _user$project$Game$talkBack = _elm_lang$core$Native_Platform.outgoingPort(
+	'talkBack',
+	function (v) {
+		return v;
+	});
+var _user$project$Game$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		var _p1 = _p0._0;
+		return {
+			ctor: '_Tuple2',
+			_0: _p1,
+			_1: _user$project$Game$talkBack(_p1)
+		};
+	});
+var _user$project$Game$talkToElm = _elm_lang$core$Native_Platform.incomingPort('talkToElm', _elm_lang$core$Json_Decode$string);
+var _user$project$Game$Listen = function (a) {
+	return {ctor: 'Listen', _0: a};
+};
+var _user$project$Game$subscriptions = function (model) {
+	return _user$project$Game$talkToElm(_user$project$Game$Listen);
+};
+var _user$project$Game$main = _elm_lang$core$Platform$program(
+	{
+		init: {ctor: '_Tuple2', _0: 'FooDat', _1: _elm_lang$core$Platform_Cmd$none},
+		update: _user$project$Game$update,
+		subscriptions: _user$project$Game$subscriptions
+	})();
