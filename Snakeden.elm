@@ -26,11 +26,6 @@ type alias PlayerInput =
     }
 
 
-type alias ShipInfo =
-    { name : String
-    , capacity : Int
-    }
-
 type Move =  Up
            | Down
            | Left
@@ -71,13 +66,10 @@ showMove m =
         Jump -> "jump"
 
 -- Browser-bound (-> Cmd msg)
--- port totalCapacity : Int -> Cmd msg
 port movePlayer : String -> Cmd msg
 
 
 -- Elm-bound (-> Sub msg)
--- port incomingShip : (ShipInfo -> msg) -> Sub msg
--- port outgoingShip : (String -> msg) -> Sub msg
 port playerInput : (Decode.Value -> msg) -> Sub msg
 port testPlayerInput : (Decode.Value -> msg) -> Sub msg
 
@@ -87,24 +79,24 @@ port testPlayerInput : (Decode.Value -> msg) -> Sub msg
 -}
 type Msg            -- see also "subscriptions" below
     = PlayerMove (Result String PlayerInput)
-    | PlayerMoveTest (Result String String)
+    -- | PlayerMoveTest (Result String String)
 
 
 decodePlayerInput : Decode.Value -> Result String PlayerInput
 decodePlayerInput = 
     Decode.decodeValue inputDecoder
 
-decodePlayerInputTest : Decode.Value -> Result String String
-decodePlayerInputTest =
-    Decode.decodeValue 
-         (Decode.field "moveTest" Decode.string)
+-- decodePlayerInputTest : Decode.Value -> Result String String
+-- decodePlayerInputTest =
+--     Decode.decodeValue 
+--          (Decode.field "moveTest" Decode.string)
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [
-    testPlayerInput ( decodePlayerInputTest >> PlayerMoveTest ) 
-    ,playerInput ( decodePlayerInput >> PlayerMove)
-    ]
+    playerInput ( decodePlayerInput >> PlayerMove)
+    -- Sub.batch [
+    -- testPlayerInput ( decodePlayerInputTest >> PlayerMoveTest ) 
+    -- ]
 
 
 
@@ -115,9 +107,6 @@ subscriptions model =
 init : ( Model, Cmd msg )
 init =
     ("nothing in the model yet", Cmd.none)
-    -- ( Dict.empty, movePlayer <| showMove Down )
---  ( Dict.empty, Cmd.none )
---  as an alternate if initial capacity report is not desired. 
 
 -- Process the incoming values and dispatch the updated capacity
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -128,15 +117,6 @@ update msg model =
             (model,movePlayer (player ++ "," ++ (showMove move)) )
         PlayerMove (Err msg) ->
             (model, movePlayer msg)
-        PlayerMoveTest (Ok move) ->
-            (model, movePlayer move)
-        PlayerMoveTest (Err msg) ->
-            (model, movePlayer msg)
-        -- Dock info ->
-        --     dock info model
-
-        -- Sail name ->
-        --     sail name model
 
 {-
   Platform.program is "headless" - it does not

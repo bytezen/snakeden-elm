@@ -5838,8 +5838,6 @@ var _NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required = F3(
 	});
 
 var _user$project$Snakeden$init = {ctor: '_Tuple2', _0: 'nothing in the model yet', _1: _elm_lang$core$Platform_Cmd$none};
-var _user$project$Snakeden$decodePlayerInputTest = _elm_lang$core$Json_Decode$decodeValue(
-	A2(_elm_lang$core$Json_Decode$field, 'moveTest', _elm_lang$core$Json_Decode$string));
 var _user$project$Snakeden$showMove = function (m) {
 	var _p0 = m;
 	switch (_p0.ctor) {
@@ -5863,41 +5861,25 @@ var _user$project$Snakeden$movePlayer = _elm_lang$core$Native_Platform.outgoingP
 var _user$project$Snakeden$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
-		if (_p1.ctor === 'PlayerMove') {
-			if (_p1._0.ctor === 'Ok') {
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Snakeden$movePlayer(
+		if (_p1._0.ctor === 'Ok') {
+			return {
+				ctor: '_Tuple2',
+				_0: model,
+				_1: _user$project$Snakeden$movePlayer(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p1._0._0.player,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_p1._0._0.player,
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								',',
-								_user$project$Snakeden$showMove(_p1._0._0.move))))
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Snakeden$movePlayer(_p1._0._0)
-				};
-			}
+							',',
+							_user$project$Snakeden$showMove(_p1._0._0.move))))
+			};
 		} else {
-			if (_p1._0.ctor === 'Ok') {
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Snakeden$movePlayer(_p1._0._0)
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Snakeden$movePlayer(_p1._0._0)
-				};
-			}
+			return {
+				ctor: '_Tuple2',
+				_0: model,
+				_1: _user$project$Snakeden$movePlayer(_p1._0._0)
+			};
 		}
 	});
 var _user$project$Snakeden$playerInput = _elm_lang$core$Native_Platform.incomingPort('playerInput', _elm_lang$core$Json_Decode$value);
@@ -5905,10 +5887,6 @@ var _user$project$Snakeden$testPlayerInput = _elm_lang$core$Native_Platform.inco
 var _user$project$Snakeden$PlayerInput = F2(
 	function (a, b) {
 		return {player: a, move: b};
-	});
-var _user$project$Snakeden$ShipInfo = F2(
-	function (a, b) {
-		return {name: a, capacity: b};
 	});
 var _user$project$Snakeden$Jump = {ctor: 'Jump'};
 var _user$project$Snakeden$Right = {ctor: 'Right'};
@@ -5945,30 +5923,14 @@ var _user$project$Snakeden$inputDecoder = A3(
 		_elm_lang$core$Json_Decode$string,
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Snakeden$PlayerInput)));
 var _user$project$Snakeden$decodePlayerInput = _elm_lang$core$Json_Decode$decodeValue(_user$project$Snakeden$inputDecoder);
-var _user$project$Snakeden$PlayerMoveTest = function (a) {
-	return {ctor: 'PlayerMoveTest', _0: a};
-};
 var _user$project$Snakeden$PlayerMove = function (a) {
 	return {ctor: 'PlayerMove', _0: a};
 };
 var _user$project$Snakeden$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$batch(
-		{
-			ctor: '::',
-			_0: _user$project$Snakeden$testPlayerInput(
-				function (_p3) {
-					return _user$project$Snakeden$PlayerMoveTest(
-						_user$project$Snakeden$decodePlayerInputTest(_p3));
-				}),
-			_1: {
-				ctor: '::',
-				_0: _user$project$Snakeden$playerInput(
-					function (_p4) {
-						return _user$project$Snakeden$PlayerMove(
-							_user$project$Snakeden$decodePlayerInput(_p4));
-					}),
-				_1: {ctor: '[]'}
-			}
+	return _user$project$Snakeden$playerInput(
+		function (_p3) {
+			return _user$project$Snakeden$PlayerMove(
+				_user$project$Snakeden$decodePlayerInput(_p3));
 		});
 };
 var _user$project$Snakeden$main = _elm_lang$core$Platform$program(
