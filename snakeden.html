@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- snakeden.html -->
+<html>
+  <head>
+    <title>Snakeden Elm</title>
+  </head>
+  <body>
+    <h1>Snakeden</h1>
+    <p>Check out the developer console, Try sending values to <code>shanghai.ports.incomingShip</code></p>
+    <script type="text/javascript" src="Snakeden.js"></script>
+    <script type="text/javascript" src="snakeden-ports.js"></script>
+    <script type="text/javascript">
+      ; (function() {
+
+        // Allow access to "snakeden" via the developer console
+        const propName = 'snakeden';
+        let module = this['snakedenPorts']; 
+
+        // make sure that we are all loaded and ready to go
+
+        if (typeof module === 'object'
+            && propName in module
+            && typeof this[propName] === 'undefined') {
+
+            this[propName] = module[propName];
+
+        } else {
+          console.log(
+            'Any one or more of the following PROBLEMS were encountered:\
+            \n  - "snakeden" is ALREADY DEFINED.\
+            \n  - "snakedenPorts" is NOT DEFINED or isn\'t an "object".\
+            \n  - "snakedenPorts.snakeden" is NOT DEFINED.'
+          );
+        }
+
+        /*  In the developer console try:
+          shanghai.ports.incomingShip.send({ name: 'Mary Mærsk',capacity: 18270 });
+          shanghai.ports.incomingShip.send({ name: 'Emma Mærsk', capacity: 15500 });
+          shanghai.ports.outgoingShip.send('Mary Mærsk');
+          shanghai.ports.outgoingShip.send('Emma Mærsk');
+
+            Or:
+          shanghaiPorts.dock('Mary Mærsk', 18270);
+          shanghaiPorts.dock('Emma Mærsk', 15500);
+          shanghaiPorts.sail('Mary Mærsk');
+          shanghaiPorts.sail('Emma Mærsk');
+         */
+
+      }).call(this);
+    </script>
+  </body>
+</html>
